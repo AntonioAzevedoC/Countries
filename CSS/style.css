@@ -1,0 +1,32 @@
+.__neighbours {
+  width: 200px;
+  height: 90px;
+}
+
+.hidden {
+  visibility: none;
+}
+
+.__error-display {
+  margin-top: 20px;
+  margin: 2%;
+  width: 100%;
+  padding-bottom: 30%;
+  float: left;
+  position: relative;
+  top: 0px;
+}
+
+.__error-text {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  margin-top: 20%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(Dx=0,Dy=0)";
+  filter: progid:DXImageTransform.Microsoft.Matrix(Dx=0,Dy=0);
+  transform: translateY(-50%);
+}
