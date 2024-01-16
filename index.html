@@ -13,13 +13,28 @@
   </head>
   <body class="bg-body-tertiary">
       <div class="container text-left bg-body-tertiary">
-        <nav class="navbar bg-body-tertiary">
-            <form class="d-flex __form-search" role="search">
-                <input class="form-control me-2 __search" type="search" placeholder="Search for countries" aria-label="Search for countries">
-                <button class="btn btn-outline-success" type="submit"  aria-label="Submit search">&#128270;
-                </button>
-            </form>
-        </nav>
+        <div class="col">
+            <!-- row navbar -->
+            <div class="row">
+                <nav class="navbar">
+                    <form class="d-flex __form-search" role="search">
+                        <input class="form-control me-2 __search" type="search" placeholder="Search for countries" aria-label="Search for countries">
+                        <button class="btn btn-outline-success" type="submit"  aria-label="Submit search">&#128270;
+                        </button>
+                    </form>
+                </nav>
+            </div>
+            <!-- row navbar dropdown -->
+            <div class="row">
+                <div class="card d-none z-3 position-absolute __card--search">
+                    <ul class="list-group list-group-flush __card--list">
+                      <!-- <li class="list-group-item">An item</li>
+                      <li class="list-group-item">A second item</li>
+                      <li class="list-group-item">A third item</li> -->
+                    </ul>
+                  </div>
+            </div>
+        </div>
         <div class="row __content d-none">
             <!-- Left side - country data -->
             <div class="col bg-body-tertiary __left-side">

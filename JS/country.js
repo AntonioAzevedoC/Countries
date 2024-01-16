@@ -10,6 +10,8 @@ const errorText = document.querySelector(".__error-text");
 const neighboursContainer = document.querySelector(".__neighbours");
 const countrySearch = document.querySelector(".__search");
 const formSearch = document.querySelector(".__form-search");
+const cardSearch = document.querySelector(".__card--search");
+const cardList = document.querySelector(".__card--list");
 const countryName = document.querySelector(".__country-name");
 const countryNativeName = document.querySelector(".__country-native-name");
 const countryFlag = document.querySelector(".__country-flag");
@@ -26,6 +28,9 @@ const countryWiki = document.querySelector(".__wiki-link");
 let population;
 let txt;
 let neighbours;
+let timer;
+let cards;
+let timerUnfocus;
 
 // Render value in array
 const renderArr = function (arr) {
@@ -60,8 +65,9 @@ const getNeighbours = function (arr) {
   });
 
   arr.forEach((el) => {
-    requestCountry(el, "alpha").then((response) => {
-      const html = `
+    requestCountry(el, "alpha")
+      .then((response) => {
+        const html = `
       <div class="card __country-card" country="${response.alpha3Code}">
         <div class="row">
           <span class="col-md-6 col-sm-12 mt-3 mb-3 ml-2 text-center __neighbour-country" id="__${response.nativeName}" >${response.name}</span>
@@ -69,9 +75,33 @@ const getNeighbours = function (arr) {
         </div>
       </div>
       `;
-      neighboursContainer.insertAdjacentHTML("beforeend", html);
-    });
+        neighboursContainer.insertAdjacentHTML("beforeend", html);
+      })
+      .catch((err) => {
+        console.error(`${err}`);
+      });
   });
+};
+
+// Rendering neighbouring countries
+const getCardCountries = function (arr) {
+  cards = Array.from(document.querySelectorAll(".__country--card--search"));
+  cards.forEach((el) => {
+    el.remove();
+  });
+
+  for (let i = 0; i < 3; i++) {
+    requestCountry(arr[i].name, "name")
+      .then(([response]) => {
+        const html = `
+        <li class="list-group-item __country--card--search">${response.name}</li>
+        `;
+        cardList.insertAdjacentHTML("beforeend", html);
+      })
+      .catch((err) => {
+        console.error(`${err}`);
+      });
+  }
 };
 
 // Rendering country
@@ -138,9 +168,46 @@ const getNeighbourCountryData = function (country) {
     })
     .catch((err) => {
       console.error(`${err}`);
-      renderError(`Something went wrong:  ${err.message}.`);
     });
 };
+
+// Stopping search timer
+const stopSearch = function (to) {
+  clearTimeout(to);
+};
+
+// Handling form typing
+formSearch.addEventListener("keydown", function () {
+  cardSearch.classList.remove("d-none");
+
+  if (timer !== undefined) stopSearch(timer);
+
+  timer = setTimeout(() => {
+    requestCountry(countrySearch.value, "name")
+      .then((response) => {
+        getCardCountries(response);
+      })
+      .catch((err) => {
+        console.error(`${err}`);
+      });
+  }, 500);
+});
+
+// Handling neighbouring countries click
+cardSearch.addEventListener("click", function (e) {
+  const click = e.target.closest(".__country--card--search");
+
+  if (!click) return;
+
+  getCountryData([click.textContent]);
+});
+
+// Handling form unfocus
+formSearch.addEventListener("focusout", function () {
+  timerUnfocus = setTimeout(() => {
+    cardSearch.classList.add("d-none");
+  }, 400);
+});
 
 // Handling form submit
 formSearch.addEventListener("submit", function (e) {
