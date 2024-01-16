@@ -7,6 +7,10 @@
   visibility: none;
 }
 
+.__card--search {
+  width: 18rem !important;
+}
+
 .__error-display {
   margin-top: 20px;
   margin: 2%;
