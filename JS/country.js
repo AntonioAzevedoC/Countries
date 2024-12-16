@@ -134,18 +134,17 @@ const renderError = function (msg) {
 };
 
 // handling country request
-const requestCountry = function (
+const requestCountry = async function (
   country,
   code,
   errMsg = "Something went wrong"
 ) {
-  return fetch(
+  const response = await fetch(
     `https://countries-api-836d.onrender.com/countries/${code}/${country}`
-  ).then((response) => {
-    if (!response.ok) throw new Error(`${errMsg} ${response.status}`);
+  );
 
-    return response.json();
-  });
+  if (!response.ok) throw new Error(`${errMsg} ${response.status}`);
+  return await response.json();
 };
 
 // Getting country data after country is requested
